@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { 
-  View, 
+import {
+  View,
   Text,
-  ListView, 
+  ListView,
   Picker,
   Dimensions,
   ScrollView,
@@ -43,18 +43,18 @@ export default class Converter extends Component {
   componentDidMount() {
     this.converter()
   }
- 
+
   converter(base=false, currency) {
     const { to, amount, totalAmount} = this.state;
     let getFromCurrency = this.state.from.split(' ')[2]
     let getToCurrency = to.split(' ')[2]
     if(this.state.from && to) {
-      fetch_get(`${this.state.selectedDate}?base=${getFromCurrency}&symbols=${getToCurrency}`)
+      fetch_get(`base=${getFromCurrency}&currencies=${getToCurrency}`, this.state.selectedDate === this.state.today ? null : this.state.selectedDate)
       .then((response) => {
         if(response.status) {
           this.setState({ error: true })
         } else {
-          let totalAmount = amount !== null ? response.rates[getToCurrency] * amount : response.rates[getToCurrency]; 
+          let totalAmount = amount !== null ? response.rates[getToCurrency] * amount : response.rates[getToCurrency];
           this.setState({ totalAmount, error: false, amount: amount !== null ? amount : '1' })
         }
       })
@@ -78,7 +78,7 @@ export default class Converter extends Component {
       } catch ({ code, message }) {
         console.warn(`Error in example '${stateKey}': `, message);
       }
-    }  
+    }
   };
 
   exchangeValues(from, to) {
@@ -261,7 +261,7 @@ const styles = {
   inputStyles: {
     width: Dimensions.get('window').width/2.3,
     height: Dimensions.get('window').height/18,
-    borderBottomWidth: 1, 
+    borderBottomWidth: 1,
     borderColor: '#2363c3' ,
     color: '#000',
     fontFamily: 'Roboto-Medium',
@@ -293,11 +293,11 @@ const styles = {
   dateView: {
     width: Dimensions.get('window').width/2.1,
     height: Dimensions.get('window').height/20,
-    flexDirection: 'row', 
-    justifyContent: 'space-around', 
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   dateText : {
-    fontSize: 18, 
+    fontSize: 18,
     color: '#000'
   },
   containerStyle: {
@@ -305,8 +305,8 @@ const styles = {
     justifyContent: 'flex-end'
   },
   textStyles: {
-    fontSize: 13, 
-    color: '#000', 
+    fontSize: 13,
+    color: '#000',
     fontFamily: 'Roboto-Medium'
   },
 }
